@@ -84,3 +84,4 @@ functions/nuxt
 .firebaserc
 .firebase
 .editorconfig
+public/*
