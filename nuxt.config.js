@@ -1,4 +1,5 @@
 const pkg = require('./package')
+const webpack = require('webpack')
 
 module.exports = {
   mode: 'universal',
@@ -41,6 +42,9 @@ module.exports = {
   modules: [
   ],
 
+  router: {
+    middleware: 'authenticated'
+  },
   /*
   ** Build configuration
   */
@@ -49,8 +53,18 @@ module.exports = {
   build: {
     publicPath: '/assets/',
     extractCSS: true,
-    extend(config, ctx) {
-
+    extend (config, { isDev, isClient }) {
+    // ...
+      config.plugins.push(
+        new webpack.EnvironmentPlugin([
+          'APIKEY',
+          'AUTHDOMAIN',
+          'DATABASEURL',
+          'PROJECTID',
+          'STORAGEBUCKET',
+          'MESSAGINGSENDERID'
+        ])
+      )
     }
   }
 }

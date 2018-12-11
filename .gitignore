@@ -85,3 +85,4 @@ functions/nuxt
 .firebase
 .editorconfig
 public/*
+.envrc
