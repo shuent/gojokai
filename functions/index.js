@@ -1,4 +1,5 @@
 const functions = require('firebase-functions')
+const admin = require('firebase-admin');
 const express = require('express')
 const { Nuxt } = require('nuxt')
 
@@ -23,3 +24,7 @@ function handleRequest(req, res) {
 }
 app.get('*', handleRequest)
 exports.nuxtApp = functions.https.onRequest(app)
+
+exports.saveUserToDB = functions.auth.user().onCreate((user) => {
+  // admin.database
+});

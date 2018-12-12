@@ -1,27 +1,29 @@
 <template lang="html">
 <section>
   <button @click="loginGoogle"> Login with Google </button>
-  {{ sth }}
+  {{ test }}
 </section>
 </template>
 
 <script>
 import auth from '~/plugins/auth';
+import firebase from '~/plugins/firebase'
 
 export default {
   data(){
     return{
-      sth: 'usus'
+      test: 'test'
     }
   },
   methods:{
     loginGoogle (){
       this.$store.dispatch('loginGoogle')
-    }
+    },
+
   },
-  async created(){
+  async mounted(){
     let user = await auth()
-    // console.log(this.$store.)
+
     this.$store.dispatch('setUser', user)
     if(user){
       this.$router.push('/post')

@@ -24,9 +24,12 @@ export default {
   },
   computed: {
     post(){
-      return this.$store.state.posts.find(post => post.uid === this.$route.params.uid)
-    } ,
+      return this.$store.state.post
+    },
 
+  },
+  created(){
+    this.$store.dispatch('setPost', this.$route.params.uid)
   }
 }
 </script>
