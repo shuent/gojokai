@@ -5,9 +5,7 @@ const googleProvider = new firebase.auth.GoogleAuthProvider()
 
 export const state = () => ({
   users: [],
-  posts: [
-    {uid: '1', title: "title", thumb: "thumb_url", content: '## yoyo yo', author: 'set user' }
-  ],
+  posts: [],
   user: null,
   post: null,
 })
@@ -20,7 +18,7 @@ export const mutations = {
     state.user = {displayName, email, photoURL, uid, providerId}
   },
   setPost(state, post){
-    state.post = post
+    state.post = Object.assign({}, post)
   },
   setPosts(state, posts){
     state.posts = posts
@@ -35,11 +33,20 @@ export const actions = {
     commit('setUser', user)
   },
   async addPost({commit}, post){
-    return await db.addPost(post)
+
+    const post_ =  await db.addPost(post)
+    console.log(await post_)
+    commit('setPost', post_)
   },
   async setPost({commit}, uid){
-    const post = await db.getPost(uid)
-    commit('setPost', post)
+    return await db.getPost(uid)
+      .then((post)=>{
+        if(post){
+          commit('setPost', post);
+        }else{
+          throw new Error('post not found')
+        }
+      })
   },
   async setPosts({commit}){
     const posts = await db.getPosts()
@@ -48,5 +55,7 @@ export const actions = {
 
 }
 export const getters = {
-
+  user: state => state.user,
+  post: state => state.post,
+  posts: state => state.posts,
 }

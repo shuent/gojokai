@@ -1,5 +1,6 @@
 <template lang="html">
 <div>
+  <!-- {{ post }} -->
   <div class="article">
     {{post.title}}
     {{post.author}}
@@ -14,22 +15,27 @@
 
 <script>
 import Disqus from '~/components/Disqus.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Disqus
   },
   validate ({store, params}) {
-    return store.state.posts.some((post) => post.uid === params.uid)
+    return 1
+    // store.dispatch('setPost')
+    // return store.state.posts.some((post) => post.uid === params.uid)
   },
   computed: {
-    post(){
-      return this.$store.state.post
-    },
+    ...mapGetters(['post']),
 
   },
-  created(){
-    this.$store.dispatch('setPost', this.$route.params.uid)
+  async fetch({store, params, error}){
+    if(store.getters.post) return;
+    return await store.dispatch('setPost', params.uid)
+      .catch(()=>{
+        error({statusCode:403, message:'not found'})
+      })
   }
 }
 </script>

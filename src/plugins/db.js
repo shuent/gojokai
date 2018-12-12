@@ -14,14 +14,19 @@ export default {
   },
   // addUser: in functions on user created.
   getPosts: async () => {
-    return await db.collection('posts').get().docs.map(doc => {
+    const snapShot =  await db.collection('posts').get()
+    return snapShot.docs.map(doc => {
       return Object.assign({uid: doc.id}, doc.data())
     })
   },
   getPost: async (uid) => {
-    return await db.collection('posts').doc(uid).get()
+    return await db.collection('posts').doc(uid).get().then( q => q.data())
   },
   addPost: async (post) => {
-    return await db.collection('posts').add(post);
+    const ref = await db.collection('posts').add(post);
+    return await ref.get()
+      .then(q =>{
+        return Object.assign({uid: q.id}, q.data())
+      })
   }
 }

@@ -19,7 +19,6 @@ export default {
     loginGoogle (){
       this.$store.dispatch('loginGoogle')
     },
-
   },
   async mounted(){
     let user = await auth()

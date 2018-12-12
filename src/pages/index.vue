@@ -5,8 +5,8 @@
   </p>
   <h2>新着</h2>
   <div class="articles">
-    {{testdb}}
-    <li v-for="post of posts">
+    {{posts}}
+    <li v-for="post in posts">
       <nuxt-link :to=' "posts/"+ post.uid ' > {{post.title}} </nuxt-link>
     </li>
   </div>
@@ -14,17 +14,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   computed:{
-    posts(){
-      return this.$store.state.posts
-    },
-    async testdb(){
-      // console.log(await db.getPosts())
-      // return await db.getPosts()
-    }
+    ...mapGetters(['posts']),
   },
+  created(){
+    this.$store.dispatch('setPosts')
+  }
 
 }
 </script>
