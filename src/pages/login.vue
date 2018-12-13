@@ -1,33 +1,46 @@
 <template lang="html">
 <section>
-  <button @click="loginGoogle"> Login with Google </button>
-  {{ test }}
+  <button @click="loginGoogle" v-if="!isAuth"> Login with Google </button>
 </section>
 </template>
 
 <script>
 import auth from '~/plugins/auth';
 import firebase from '~/plugins/firebase'
+import { mapGetters } from 'vuex'
 
 export default {
   data(){
     return{
-      test: 'test'
+      isAuth: false,
     }
+  },
+  computed:{
+    ...mapGetters(['isLoaded']),
+
   },
   methods:{
     loginGoogle (){
-      this.$store.dispatch('loginGoogle')
+      firebase.auth()
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then((result)=>{
+        this.$store.dispatch('setUser', result.user)
+        this.$router.push('/post')
+
+      })
     },
   },
-  async mounted(){
+  async created(){
+    this.$store.dispatch('setLoaded', false)
     let user = await auth()
-
-    this.$store.dispatch('setUser', user)
     if(user){
+      this.$store.dispatch('setUser', user)
+      this.isAuth = true;
       this.$router.push('/post')
     }
-  }
+
+    this.$store.dispatch('setLoaded', true)
+  },
 }
 </script>
 

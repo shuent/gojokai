@@ -26,6 +26,10 @@ export default {
     return {
       about: 'about'
     }
+  },
+  created(){
+    this.$store.dispatch('setLoaded', true)
+    
   }
 }
 </script>

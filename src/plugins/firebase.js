@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import 'firebase/firestore'
 
 if (!firebase.apps.length) {
   firebase.initializeApp(
@@ -11,6 +12,8 @@ if (!firebase.apps.length) {
       messagingSenderId: process.env.MESSAGINGSENDERID
     }
   )
+  firebase.firestore().settings( { timestampsInSnapshots: true })
+
 }
 
 export default firebase

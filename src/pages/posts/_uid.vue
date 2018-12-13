@@ -21,11 +21,6 @@ export default {
   components: {
     Disqus
   },
-  validate ({store, params}) {
-    return 1
-    // store.dispatch('setPost')
-    // return store.state.posts.some((post) => post.uid === params.uid)
-  },
   computed: {
     ...mapGetters(['post']),
 
@@ -33,8 +28,11 @@ export default {
   async fetch({store, params, error}){
     if(store.getters.post) return;
     return await store.dispatch('setPost', params.uid)
-      .catch(()=>{
-        error({statusCode:403, message:'not found'})
+      .then(()=>{
+        store.dispatch('isLoaded',true)
+      })
+      .catch((err)=>{
+        throw ({statusCode:403, message: err.message})
       })
   }
 }

@@ -1,15 +1,22 @@
 <template>
   <div>
     <navbar />
-    <nuxt/>
+    <div class="wrapper" v-if="!isLoaded">loading...</div>
+    <div class="wrapper" v-show="isLoaded">
+      <nuxt/>
+    </div>
   </div>
 </template>
 <script>
 import Navbar from '~/components/Navbar.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Navbar
+  },
+  computed:{
+    ...mapGetters(['isLoaded'])
   }
 }
 </script>

@@ -5,7 +5,6 @@
   </p>
   <h2>新着</h2>
   <div class="articles">
-    {{posts}}
     <li v-for="post in posts">
       <nuxt-link :to=' "posts/"+ post.uid ' > {{post.title}} </nuxt-link>
     </li>
@@ -20,9 +19,11 @@ export default {
   computed:{
     ...mapGetters(['posts']),
   },
-  created(){
+  async created(){
     this.$store.dispatch('setPosts')
+    this.$store.dispatch('setLoaded', true)
   }
+
 
 }
 </script>
